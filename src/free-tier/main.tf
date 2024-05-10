@@ -1,0 +1,47 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.47.0"
+    }
+  }
+}
+
+provider "aws" {
+  profile = "pedrorequiao"
+}
+
+module "vpc" {
+  source = "../modules/vpc"
+}
+
+module "public_subnet" {
+  source = "../modules/public-subnet"
+
+  vpc_id = module.vpc.vpc_id
+}
+
+module "internet_gateway" {
+  source = "../modules/internet-gateway"
+
+  vpc_id = module.vpc.vpc_id
+}
+
+module "route_table" {
+  source = "../modules/route-table"
+
+  vpc_id                        = module.vpc.vpc_id
+  internet_gateway_id           = module.internet_gateway.internet_gateway_id
+  public_subnet_id              = module.public_subnet.public_subnet_id
+  route_table_should_be_created = var.route_table_should_be_created
+}
+
+module "ec2" {
+  source = "../modules/ec2"
+
+  vpc_id           = module.vpc.vpc_id
+  public_subnet_id = module.public_subnet.public_subnet_id
+
+  ec2_ssh_key_name        = var.ec2_ssh_key_name
+  ec2_ssh_public_key_path = var.ec2_ssh_public_key_path
+}
