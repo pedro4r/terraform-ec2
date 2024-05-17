@@ -10,6 +10,18 @@ variable "region" {
   default     = "us-east-1"
 }
 
+variable "ec2_security_group_description" {
+  description = "The Description of the EC2 Security Group"
+  type        = string
+  default     = "Free Tier EC2 Security Group"
+}
+
+variable "ec2_security_group_name" {
+  description = "The Name of the EC2 Security Group"
+  type        = string
+  default     = "Free Tier EC2 Security Group"
+}
+
 variable "ec2_ssh_key_name" {
   description = "The SSH Key Name"
   type        = string

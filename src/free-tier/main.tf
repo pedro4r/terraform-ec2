@@ -11,6 +11,12 @@ provider "aws" {
   profile = "pedrorequiao"
 }
 
+module "ec2_key_pair" {
+  source                  = "../modules/key-pair"
+  ec2_ssh_key_name        = var.ec2_ssh_key_name
+  ec2_ssh_public_key_path = var.ec2_ssh_public_key_path
+}
+
 module "vpc" {
   source = "../modules/vpc"
 }
@@ -27,21 +33,41 @@ module "internet_gateway" {
   vpc_id = module.vpc.vpc_id
 }
 
-module "route_table" {
-  source = "../modules/route-table"
+module "ec2_security_group" {
+  source                         = "../modules/security-group"
+  ec2_security_group_name        = var.ec2_security_group_name
+  ec2_security_group_description = var.ec2_security_group_description
+  vpc_id                         = module.vpc.vpc_id
 
-  vpc_id                        = module.vpc.vpc_id
-  internet_gateway_id           = module.internet_gateway.internet_gateway_id
-  public_subnet_id              = module.public_subnet.public_subnet_id
-  route_table_should_be_created = var.route_table_should_be_created
+  tag_name = var.ec2_security_group_name
 }
 
-module "ec2" {
+module "ec2_1" {
   source = "../modules/ec2"
 
-  vpc_id           = module.vpc.vpc_id
-  public_subnet_id = module.public_subnet.public_subnet_id
+  vpc_id            = module.vpc.vpc_id
+  public_subnet_id  = module.public_subnet.public_subnet_1_id
+  security_group_id = module.ec2_security_group.security_group_id
 
-  ec2_ssh_key_name        = var.ec2_ssh_key_name
-  ec2_ssh_public_key_path = var.ec2_ssh_public_key_path
+  key_name = module.ec2_key_pair.key_name
+}
+
+module "ec2_2" {
+  source = "../modules/ec2"
+
+  vpc_id            = module.vpc.vpc_id
+  public_subnet_id  = module.public_subnet.public_subnet_2_id
+  security_group_id = module.ec2_security_group.security_group_id
+
+  key_name = module.ec2_key_pair.key_name
+}
+
+module "ec2_3" {
+  source = "../modules/ec2"
+
+  vpc_id            = module.vpc.vpc_id
+  public_subnet_id  = module.public_subnet.public_subnet_3_id
+  security_group_id = module.ec2_security_group.security_group_id
+
+  key_name = module.ec2_key_pair.key_name
 }

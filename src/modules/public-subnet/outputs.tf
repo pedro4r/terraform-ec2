@@ -1,9 +1,18 @@
-output "public_subnet_id" {
-  description = "The ID of the Public Subnet"
-  value       = concat(aws_subnet.public_subnet.*.id, [""])[0]
+output "public_subnet_1_id" {
+  value = aws_subnet.public_subnet_1.id
+  sensitive = false
+  description = "The ID of the public subnet 1"
 }
 
-output "public_subnet_arn" {
-  description = "The ARN of the Public Subnet"
-  value       = concat(aws_subnet.public_subnet.*.arn, [""])[0]
+output "public_subnet_2_id" {
+  value = aws_subnet.public_subnet_2.id
+  sensitive = false
+  description = "The ID of the public subnet 2"
 }
+
+output "public_subnet_3_id" {
+  value = aws_subnet.public_subnet_3.id
+  sensitive = false
+  description = "The ID of the public subnet 3"
+}
+

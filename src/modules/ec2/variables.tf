@@ -10,16 +10,9 @@ variable "ec2_name" {
   default     = "Free Tier EC2"
 }
 
-variable "ec2_security_group_name" {
-  description = "The Name of the EC2 Security Group"
+variable "security_group_id" {
+  description = "The ID of the security group to associate with the EC2 instance"
   type        = string
-  default     = "Free Tier EC2 Security Group"
-}
-
-variable "ec2_security_group_description" {
-  description = "The Description of the EC2 Security Group"
-  type        = string
-  default     = "Free Tier EC2 Security Group"
 }
 
 variable "ec2_ami" {
@@ -44,13 +37,7 @@ variable "public_subnet_id" {
   type        = string
 }
 
-variable "ec2_ssh_key_name" {
-  description = "The SSH Key Name"
-  type        = string
-  default     = "free-tier-ec2-key"
-}
-
-variable "ec2_ssh_public_key_path" {
-  description = "The local path to the SSH Public Key"
+variable "key_name" {
+  description = "The key pair name to associate with the EC2 instance"
   type        = string
 }
